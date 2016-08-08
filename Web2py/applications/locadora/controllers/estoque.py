@@ -1,0 +1,50 @@
+# -*- coding: utf-8 -*-
+
+@auth.requires_login()
+def estocar():
+    form = SQLFORM(Estoque)
+    if form.process().accepted:
+        session.flash = 'Jogo adicionado ao estoque!'
+        redirect(URL('estocar'))
+    elif form.errors:
+        response.flash = 'Erros no formulário!'
+    else:
+        if not response.flash:
+            response.flash = 'Preencha o formulário!'
+    return dict(form=form)
+
+
+@auth.requires_login()
+def listar():
+    estoque = db(Estoque).select()
+    return dict(estoque=estoque)
+
+
+@auth.requires_login()
+def alterar():
+    form = SQLFORM(Estoque, request.args(0, cast=int))
+    if form.process().accepted:
+        session.flash = 'Estoque atualizado!'
+        redirect(URL('listar'))
+    elif form.errors:
+        response.flash = 'Erros no formulário!'
+    else:
+        if not response.flash:
+            response.flash = 'Preencha o formulário!'
+    return dict(form=form)
+
+
+@auth.requires_login()
+def remover():
+    db(Estoque.id==request.args(0, cast=int)).delete()
+    session.flash = 'Item apagado!'
+    redirect(URL('listar'))
+
+
+@cache.action()
+def download():
+    """
+    allows downloading of uploaded files
+    http://..../[app]/default/download/[filename]
+    """
+    return response.download(request, db)

@@ -1,0 +1,35 @@
+{{extend 'layout.html'}}
+<table border="1" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Cliente</th>
+            <th>Jogos</th>
+            <th>Data de locação</th>
+            <th>Data de devolução</th>
+            <th>Multa</th>
+            <th>
+                <a href="{{=URL('locacoes','locar')}}">Locar</a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {{for item in locacoes :}}
+            <tr>
+                <td>{{=item.cliente.nome}}</td>
+                <td>
+                    {{for jogo in item.jogos:}}
+                        <img width=30 src="{{=URL('download',args=[jogo.capa])}}"/> {{=jogo.titulo}}</br>
+                    {{pass}}
+                </td>
+                <td>{{=item.data_locacao}}</td>
+                <td>{{=item.data_devolucao}}</td>
+                <td>{{=item.multa}}</td>
+                <td>
+                    <a href="{{=URL('locacoes','alterar',args=[item.id])}}">Editar</a>
+                    |
+                    <a href="{{=URL('locacoes','remover',args=[item.id])}}">Remover</a>
+                </td>
+            </tr>
+        {{pass}}
+    </tbody>
+</table>

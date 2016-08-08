@@ -1,0 +1,4 @@
+# -*- coding: utf-8 -*-
+response.menu = [
+    (T('My Sites'), False, URL('admin', 'default', 'site')),
+    ]
